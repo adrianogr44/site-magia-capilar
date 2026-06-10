@@ -134,27 +134,12 @@
 
   // ---------- Antes e depois slider ----------
   function initAntesDepois() {
-    $$('.ad-slider').forEach(slider => {
-      const after = $('.ad-after', slider);
-      const handle = $('.ad-handle', slider);
-      if (!after || !handle) return;
-
-      function setPos(clientX) {
-        const rect = slider.getBoundingClientRect();
-        let pct = ((clientX - rect.left) / rect.width) * 100;
-        pct = Math.max(0, Math.min(100, pct));
-        after.style.clipPath = `inset(0 0 0 ${pct}%)`;
-        handle.style.left = `${pct}%`;
-      }
-
-      let dragging = false;
-      on(slider, 'mousedown', e => { dragging = true; setPos(e.clientX); });
-      on(window, 'mousemove', e => { if (dragging) setPos(e.clientX); });
-      on(window, 'mouseup', () => { dragging = false; });
-
-      on(slider, 'touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
-      on(slider, 'touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
-      on(slider, 'touchend', () => { dragging = false; });
+    document.querySelectorAll('.ad-slider').forEach(function(s){
+      var r = s.querySelector('input[type=range]');
+      if(!r) return;
+      function upd(){ s.style.setProperty('--pos', r.value + '%'); }
+      r.addEventListener('input', upd);
+      upd();
     });
   }
 

@@ -1,7 +1,28 @@
 /* =============================================================================
-   Magia Capilar — Sistema de Design (M5)
-   Fontes: Montserrat (titulos/destaques) + Open Sans (corpo/UI/precos)
+   Magia Capilar — Sistema de Design (M6 — refino editorial DTC)
+   Fontes: Fraunces (titulos/destaques editoriais) + DM Sans (corpo/UI/precos)
    Paleta: wine / cream / gold / ink — identidade preservada do original
+
+   DECISOES DO REDESIGN (CSS-only; HTML/JS intactos):
+   - SINTESE: estrutura/riqueza estilo gummy + contencao/respiro estilo Manual.
+     "Energia na estrutura, sobriedade no acabamento." Sem emoji, sem cor
+     estridente, sem urgencia espalhafatosa. O premium vem do respiro e da
+     tipografia.
+   - ESPACAMENTO: 1 token novo, --section-y (clamp fluido), define o ritmo
+     vertical generoso entre secoes — aplicado de forma consistente. Demais
+     espacos reutilizam a escala --sp-* ja existente (sem variavel redundante).
+   - TIPOGRAFIA: hierarquia editorial — eyebrow (gold, tracking alto, deco-line)
+     > H2 grande e confiante (Fraunces serif, tracking leve) > subtitulo calmo
+     (DM Sans, --smoke). Cabecalho de secao padronizado = principal sinal de
+     "grife".
+   - COR: wine como base seria; GOLD so como acento pontual (deco-line, hover,
+     stars, badge de desconto). Fundo predominante cream/ivory para o ar limpo.
+   - MOVIMENTO: microinteracoes lentas (--med/--slow), so transform/opacity;
+     hover-lift discreto nos cards. Respeita prefers-reduced-motion.
+   - CARDS: borda fina (--mist) + sombra suave + padding amplo + altura uniforme.
+   - Mobile-first nos blocos novos; geometria existente (hero/carousel/PDP)
+     preservada para nao introduzir CLS. checkout.html tem CSS proprio (nao usa
+     este arquivo) e ficou fora do escopo.
    ============================================================================= */
 
 :root {
@@ -52,17 +73,22 @@
   --sp-24: 96px;
 
   /* Tipografia */
-  /* --f-serif = fonte de titulos/destaques (Montserrat). Nome mantido por compatibilidade. */
-  --f-serif: "Montserrat", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --f-sans:  "Open Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* --f-serif = fonte de titulos/destaques editoriais (Fraunces). Nome mantido por compatibilidade. */
+  --f-serif: "Fraunces", "Georgia", "Times New Roman", serif;
+  --f-sans:  "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
-  /* Container */
+  /* Container — UMA largura padrao (wide) + UMA estreita (texto-corrido/blocos focais ~68ch) */
   --container: 1240px;
-  --container-narrow: 880px;
+  --container-narrow: 760px;
 
   /* Header */
   --header-h: 88px;
-  --announce-h: 36px;
+  --announce-h: 44px;
+
+  /* Ritmo vertical editorial (respiro entre secoes — sinal de grife).
+     Unico token novo: nao havia equivalente fluido. Reduz no mobile e
+     cresce no desktop sem heights fixos. */
+  --section-y: clamp(46px, 5.2vw, 80px);
 }
 
 /* ============================================================================
@@ -73,8 +99,9 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   font-family: var(--f-sans);
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
+  font-weight: 460;
   color: var(--ink);
   background: var(--cream);
   -webkit-font-smoothing: antialiased;
@@ -93,16 +120,16 @@ input, textarea, select { font: inherit; color: inherit; }
    ============================================================================ */
 h1, h2, h3, h4 {
   font-family: var(--f-serif);
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.18;
   color: var(--ink);
   margin: 0 0 var(--sp-4);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.005em;
 }
-h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); font-weight: 700; }
-h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; }
-h3 { font-size: clamp(1.3rem, 2.5vw, 1.6rem); }
-h4 { font-size: 1.1rem; font-weight: 600; }
+h1 { font-size: clamp(2.8rem, 6vw, 4.1rem); font-weight: 700; letter-spacing: -0.018em; }
+h2 { font-size: clamp(2.3rem, 4.8vw, 3.2rem); font-weight: 700; letter-spacing: -0.012em; }
+h3 { font-size: clamp(1.55rem, 2.9vw, 1.9rem); }
+h4 { font-size: 1.28rem; font-weight: 700; }
 .serif { font-family: var(--f-serif); }
 .italic { font-style: italic; }
 p { margin: 0 0 var(--sp-3); }
@@ -117,11 +144,11 @@ p { margin: 0 0 var(--sp-3); }
 .eyebrow {
   display: inline-block;
   font-family: var(--f-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-d);
+  color: var(--wine);
   margin-bottom: var(--sp-3);
 }
 
@@ -141,12 +168,41 @@ p { margin: 0 0 var(--sp-3); }
   padding-left: var(--sp-6);
   padding-right: var(--sp-6);
 }
-.section { padding: var(--sp-20) 0; }
+.section { padding: var(--section-y) 0; }
 .section-sm { padding: var(--sp-12) 0; }
-.section-title { text-align: center; margin-bottom: var(--sp-12); }
-.section-title .eyebrow { display: inline-block; }
-.section-title h2 { margin-bottom: var(--sp-3); }
-.section-title p { color: var(--smoke); max-width: 620px; margin: 0 auto; }
+.section-title {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto var(--sp-10);
+}
+.section-title .eyebrow {
+  display: inline-block;
+  font-family: var(--f-sans);    /* label em caixa-alta: sans (DM Sans) lê melhor que serif */
+  color: var(--gold-d);          /* #A0774C ~ #A87B4F: dourado escuro legivel sobre cream */
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+}
+/* Deco-line dourada sob o eyebrow — acabamento editorial consistente em todas
+   as secoes (gold usado com parcimonia, so como acento). */
+.section-title .eyebrow::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1.5px;
+  margin: var(--sp-3) auto 0;
+  border-radius: var(--pill);
+  background: var(--gold-d);
+}
+.section-title h2 { margin-bottom: var(--sp-4); }
+.section-title p {
+  color: var(--ink-soft);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 auto;
+}
 
 .grid { display: grid; gap: var(--sp-6); }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
@@ -164,30 +220,30 @@ p { margin: 0 0 var(--sp-3); }
   align-items: center;
   justify-content: center;
   gap: var(--sp-2);
-  padding: 14px 28px;
+  padding: 16px 34px;
   font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
   border-radius: var(--pill);
-  transition: all var(--fast);
+  transition: background var(--med), border-color var(--med), color var(--med), box-shadow var(--med);
   cursor: pointer;
   white-space: nowrap;
   border: 1px solid transparent;
   text-decoration: none;
 }
 .btn svg { width: 18px; height: 18px; }
+/* Botoes "flat premium": sem glow colorido; o hover aprofunda a cor (efeito de
+   preenchimento), nao levanta o botao. Estilo loja de luxo, sem cara de IA. */
 .btn-primary {
   background: var(--wine);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(139, 34, 82, 0.25);
 }
 .btn-primary:hover {
-  background: var(--wine-h);
+  background: var(--wine-d);
   color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(139, 34, 82, 0.35);
+  box-shadow: 0 4px 14px rgba(28, 16, 24, 0.16);
 }
-.btn-primary:active { transform: translateY(0); }
+.btn-primary:active { background: var(--wine-d); box-shadow: none; }
 .btn-outline {
   background: transparent;
   color: var(--ink);
@@ -203,10 +259,9 @@ p { margin: 0 0 var(--sp-3); }
 .btn-gold {
   background: var(--gold);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(196, 149, 106, 0.3);
 }
-.btn-gold:hover { background: var(--gold-d); color: #fff; transform: translateY(-1px); }
-.btn-lg { padding: 18px 36px; font-size: 1rem; }
+.btn-gold:hover { background: var(--gold-d); color: #fff; }
+.btn-lg { padding: 20px 42px; font-size: 1.12rem; }
 .btn-sm { padding: 10px 20px; font-size: 0.85rem; }
 .btn-block { display: flex; width: 100%; }
 
@@ -214,19 +269,63 @@ p { margin: 0 0 var(--sp-3); }
    Anuncio + Header
    ============================================================================ */
 .announce {
+  position: relative;
+  overflow: hidden;
   background: var(--wine-d);
-  color: #fff;
+  color: var(--blush);
   text-align: center;
-  padding: 10px var(--sp-6);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  font-weight: 500;
+  padding: 12px var(--sp-6);
   min-height: var(--announce-h);
   display: flex;
   align-items: center;
   justify-content: center;
 }
+/* Barra rotativa: as 3 frases ocupam o MESMO espaco (absolute, empilhadas) e se
+   alternam em loop; cada uma entra/sai com fade — anima SO opacity + translateY
+   leve. Altura travada por min-height -> sem CLS. Ciclo 12s = ~4s por frase.
+   100% CSS (sem JS). */
+.announce-item {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  line-height: var(--announce-h);   /* centra verticalmente a linha unica sem flex */
+  padding: 0 var(--sp-6);
+  font-size: 0.92rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  animation: announce-rotate 12s infinite both;
+}
+.announce-item:nth-child(1) { animation-delay: 0s; }
+.announce-item:nth-child(2) { animation-delay: 4s; }
+.announce-item:nth-child(3) { animation-delay: 8s; }
 .announce strong { color: var(--gold-lt); font-weight: 600; }
+@keyframes announce-rotate {
+  0%   { opacity: 0; transform: translateY(6px); }
+  4%   { opacity: 1; transform: translateY(0); }    /* fade-in */
+  33%  { opacity: 1; transform: translateY(0); }    /* visivel ~1/3 do ciclo */
+  37%  { opacity: 0; transform: translateY(-6px); } /* fade-out */
+  100% { opacity: 0; transform: translateY(-6px); }
+}
+@media (max-width: 560px) {
+  .announce-item { font-size: 0.8rem; padding: 0 var(--sp-4); }
+}
+/* Acessibilidade: sem rotacao/movimento -> empilha as 3 frases estaticas
+   (nenhuma oferta some), animacao desligada. */
+@media (prefers-reduced-motion: reduce) {
+  .announce { display: block; }
+  .announce-item {
+    position: static;
+    inset: auto;
+    opacity: 1;
+    animation: none;
+    transform: none;
+    white-space: normal;
+    line-height: 1.4;
+    padding: 2px var(--sp-6);
+  }
+}
 
 .site-header {
   position: sticky;
@@ -253,7 +352,7 @@ p { margin: 0 0 var(--sp-3); }
 .logo img { height: 48px; width: auto; }
 .nav { display: flex; gap: var(--sp-8); }
 .nav a {
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: rgba(255,255,255,0.95);
@@ -372,6 +471,32 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   /* Mobile: imagens _mobile sao 700x800 (7/8); cover preenche 100% sem corte */
   .hero-slides { aspect-ratio: 7 / 8; }
 }
+.hero-seal {
+  position: absolute;
+  top: var(--sp-5);
+  left: var(--sp-5);
+  z-index: 5;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(110, 31, 42, 0.92);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: var(--pill);
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.hero-seal svg { width: 16px; height: 16px; color: var(--gold-lt); }
+@media (max-width: 560px) {
+  .hero-seal { font-size: 10px; padding: 6px 10px; top: 10px; left: 10px; gap: 6px; }
+  .hero-seal svg { width: 13px; height: 13px; }
+}
 .hero-content .eyebrow { color: var(--gold-lt); }
 .hero-content h1 { color: #fff; font-style: italic; font-weight: 500; }
 .hero-content p { font-size: 1.1rem; opacity: 0.92; margin-bottom: var(--sp-6); }
@@ -417,44 +542,68 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 /* ============================================================================
    Barra de selos
    ============================================================================ */
+/* Direcao "N": icone wine ~32px, label Fraunces 700 em ink, faixa cream,
+   bom respiro. Mobile-first: 2 col -> 3 (tablet) -> 5 (desktop). */
 .selos {
+  background: var(--cream);
+}
+.selos .selos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   /* mobile: 2 col -> 4 selos = 2+2 (par) */
+  gap: 30px 8px;
+  padding: 32px var(--sp-6);
+  max-width: 920px;                          /* centra a faixa e evita selos esparsos */
+  margin: 0 auto;
+  /* Agrupamento visual: conteiner sutil para os 4 selos nao ficarem "soltos"
+     direto sobre o fundo (ivory + borda fina + radius, com os tokens da loja). */
   background: var(--ivory);
-  border-top: 1px solid var(--mist);
-  border-bottom: 1px solid var(--mist);
-  padding: var(--sp-6) 0;
+  border: 1px solid var(--mist);
+  border-radius: var(--r-lg);
 }
-.selos-grid {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--sp-6);
-  text-align: center;
-}
-.selo {
+.selos .selo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-2);
-  min-width: 140px;
+  text-align: center;
+  gap: 14px;
+  padding: 0 14px;
 }
-.selo .selo-ico {
-  width: 40px;
-  height: 40px;
+.selos .selo-ico {
   color: var(--wine);
+  line-height: 0;
 }
-.selo .selo-ico svg { width: 100%; height: 100%; }
-.selo strong { font-family: var(--f-serif); font-size: 1rem; font-weight: 600; color: var(--ink); }
-.selo span { font-size: 0.78rem; color: var(--smoke); }
+.selos .selo-ico svg {
+  width: 32px;
+  height: 32px;
+}
+.selos .selo strong {
+  font-family: var(--f-serif);
+  font-weight: 700;
+  font-size: 16.5px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.selos .selo-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.selos .selo-txt span {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 210px;
+}
+@media (min-width: 1024px) {
+  /* O HTML tem 4 selos: 4 colunas = linha unica, centrada, sem coluna vazia.
+     (Se um 5o selo for adicionado no HTML, trocar para repeat(5, 1fr).) */
+  .selos .selos-grid { grid-template-columns: repeat(4, 1fr); padding: 40px var(--sp-8); }
+}
 
 /* ============================================================================
-   Grid de categorias
+   Categorias — agora em carrossel (.carousel.cats-carousel).
+   O tamanho dos cards e definido apos o bloco generico .carousel (mais abaixo).
    ============================================================================ */
-.cats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-6);
-}
 .cat-card {
   position: relative;
   border-radius: var(--r-lg);
@@ -465,7 +614,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   transition: transform var(--med), box-shadow var(--med);
   cursor: pointer;
 }
-.cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.cat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .cat-card img {
   position: absolute;
   inset: 0;
@@ -474,7 +623,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   object-fit: cover;
   transition: transform var(--slow);
 }
-.cat-card:hover img { transform: scale(1.05); }
+.cat-card:hover img { transform: scale(1.03); }
 .cat-card::after {
   content: "";
   position: absolute;
@@ -523,15 +672,23 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
    ============================================================================ */
 .prod-card {
   background: var(--ivory);
-  border-radius: var(--r);
+  border: 1px solid var(--border, #E8E2DC);
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--med), box-shadow var(--med);
+  transition: transform .28s var(--ease),
+              box-shadow .28s ease,
+              border-color .28s ease;
   position: relative;
 }
-.prod-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.prod-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--wine);
+  box-shadow: 0 8px 24px rgba(26,15,21,.08);
+}
+.prod-card:hover .btn-primary { background: var(--wine-d); }
 .prod-card .prod-img {
   aspect-ratio: 1;
   background: var(--blush);
@@ -542,9 +699,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--slow);
+  transition: transform .4s var(--ease);
 }
-.prod-card:hover .prod-img img { transform: scale(1.03); }
+.prod-card:hover .prod-img img { transform: none; }
 .prod-badge {
   position: absolute;
   top: var(--sp-3);
@@ -561,23 +718,23 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 }
 .prod-badge.desc { background: var(--gold); }
 .prod-card .prod-body {
-  padding: var(--sp-5);
+  padding: var(--sp-6);
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
   flex: 1;
 }
 .prod-card .prod-cat {
-  font-size: 0.72rem;
-  color: var(--smoke);
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  color: var(--gold-d);
+  letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 .prod-card .prod-name {
   font-family: var(--f-serif);
-  font-size: 1.02rem;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--ink);
   line-height: 1.3;
   margin: 0;
@@ -585,29 +742,36 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 }
 .prod-card .prod-stars {
   color: var(--gold);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-size: 17px;
+  letter-spacing: 1.5px;
 }
-.prod-card .prod-stars span { color: var(--smoke); margin-left: 4px; }
+.prod-card .prod-stars span { color: var(--smoke); margin-left: 4px; font-size: 12px; }
 .prod-card .prod-price {
   display: flex;
   align-items: baseline;
   gap: var(--sp-2);
   margin-top: auto;
-  padding-top: var(--sp-3);
+  padding-top: var(--sp-4);
 }
 .prod-card .prod-price-old {
   color: var(--smoke);
-  font-size: 0.85rem;
+  font-size: 15px;
   text-decoration: line-through;
+  text-decoration-color: var(--mist);
 }
 .prod-card .prod-price-now {
   color: var(--wine);
-  font-size: 1.35rem;
+  font-size: 30px;
   font-weight: 700;
   font-family: var(--f-serif);
+  letter-spacing: -0.01em;
 }
-.prod-card .btn { margin-top: var(--sp-4); }
+.prod-card .btn { margin-top: var(--sp-5); }
+@media (prefers-reduced-motion: reduce) {
+  .prod-card, .prod-card .prod-img img { transition: none; }
+  .prod-card:hover { transform: none; }
+  .prod-card:hover .prod-img img { transform: none; }
+}
 
 /* ============================================================================
    Carrossel generico (produtos, reels, avaliacoes)
@@ -631,23 +795,45 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 @media (max-width: 960px) { .carousel > * { flex-basis: calc((100% - var(--sp-5)) / 2); } }
 @media (max-width: 560px) { .carousel > * { flex-basis: 82%; } }
 
+/* Categorias como carrossel — cards maiores: 3 por vista no desktop
+   (antes o grid mostrava 4), 2 no tablet, ~1.25 no mobile (com peek). */
+/* Categorias: 3 cards grandes visiveis no desktop. O carrossel "rompe" o
+   container (centralizado) para ter largura suficiente p/ 3 cards grandes.
+   Mobile-first: 1 + peek -> 2 (tablet) -> 3 (desktop, mais largo). */
+.cats-carousel .cat-card-label strong { font-size: 1.6rem; }
+.cats-carousel > * { flex-basis: 80%; }                               /* mobile: 1 + peek */
+@media (min-width: 640px) {
+  .cats-carousel > * { flex-basis: calc((100% - var(--sp-5)) / 2); }  /* tablet: 2 */
+}
+@media (min-width: 1024px) {
+  .cats-carousel > * { flex-basis: calc((100% - var(--sp-5) * 2) / 3); } /* desktop: 3, dentro do .container */
+}
+
+/* Setas do carrossel de categorias: maiores e centralizadas verticalmente
+   (cards mais altos) — corrige a proporcao das setas. */
+.cats-wrap .carousel-nav { width: 56px; height: 56px; top: 50%; }
+.cats-wrap .carousel-nav svg { width: 26px; height: 26px; }
+.cats-wrap .carousel-nav.prev { left: -8px; }
+.cats-wrap .carousel-nav.next { right: -8px; }
+
 .carousel-nav {
   position: absolute;
-  top: 42%;
+  top: 50%;
   transform: translateY(-50%);
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: var(--shadow);
+  background: var(--wine);
+  border: 1px solid var(--wine);
+  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink);
-  transition: transform var(--fast), background var(--fast);
+  color: #fff;
+  transition: transform var(--med), background var(--med), color var(--med), box-shadow var(--med);
   z-index: 2;
 }
-.carousel-nav:hover { background: var(--wine); color: #fff; transform: translateY(-50%) scale(1.05); }
+.carousel-nav:hover { background: var(--wine-h); border-color: var(--wine-h); color: #fff; box-shadow: var(--shadow); transform: translateY(-50%) scale(1.04); }
 .carousel-nav.prev { left: -10px; }
 .carousel-nav.next { right: -10px; }
 .carousel-nav svg { width: 20px; height: 20px; }
@@ -659,7 +845,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 .fundadora-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--sp-16);
+  gap: var(--sp-12);
   align-items: center;
 }
 .fundadora-img {
@@ -671,7 +857,17 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 }
 .fundadora-img img { width: 100%; height: 100%; object-fit: cover; }
 .fundadora-texto h2 { margin-bottom: var(--sp-4); }
-.fundadora-texto p { color: var(--ink-soft); font-size: 1.05rem; line-height: 1.75; }
+.fundadora-texto p { color: var(--ink-soft); font-size: 1.18rem; line-height: 1.68; }
+.fundadora-cit {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--wine);
+  border-left: 3px solid var(--gold);
+  padding-left: var(--sp-5);
+  margin: var(--sp-6) 0 0;
+}
 .fundadora-assinatura {
   display: flex;
   align-items: center;
@@ -688,20 +884,74 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 }
 
 /* ============================================================================
+   QA — Sistema de largura + imagens sem recorte (FASE 2)
+   ============================================================================ */
+/* #historia-cabelo reusa o layout .fundadora-wrap, mas a "imagem" e um INFOGRAFICO
+   quadrado (1:1) com texto ate as bordas. Aqui NAO usamos cover (cortaria as
+   laterais): mostramos a imagem inteira (contain, 1:1, height auto) e alinhamos
+   a coluna ao topo do texto. */
+#historia-cabelo .fundadora-wrap { align-items: start; }
+#historia-cabelo .fundadora-img {
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  border-radius: var(--r-lg);
+}
+#historia-cabelo .fundadora-img img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: var(--r-lg);
+}
+
+/* Como funciona: lista de texto-corrido na medida estreita do sistema, agrupada
+   num conteiner sutil (#4) para os passos nao ficarem soltos sobre o fundo. */
+#como-funciona .modo-uso-list {
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  background: var(--ivory);
+  border: 1px solid var(--mist);
+  border-radius: var(--r-lg);
+  padding: var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-6);
+}
+#como-funciona .modo-uso-list li:last-child { margin-bottom: 0; }
+
+/* "Por que escolher": imagem unica na medida estreita, com aspect-ratio declarado
+   (sem CLS) — substitui o max-width/box-shadow inline migrado do HTML. */
+.comparativo-img {
+  display: block;
+  width: 100%;
+  max-width: var(--container-narrow);
+  height: auto;
+  aspect-ratio: 1080 / 1350;
+  margin-inline: auto;
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+/* #3: a secao "porque escolher" e so uma imagem; reduz a banda vazia ao redor
+   para ela nao parecer um bloco flutuando isolado (a imagem ja se agrupa via
+   shadow + radius). Escopado via :has, sem afetar outras .section.bg-ivory. */
+.section:has(> .container > .comparativo-img) { padding-block: var(--sp-12); }
+
+/* ============================================================================
    Antes e Depois — slider interativo de comparacao (arrastar a divisoria)
    ============================================================================ */
-.ad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
-.ad-slider{--pos:50%;position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden;box-shadow:0 10px 34px rgba(26,15,21,.14);border:1px solid var(--border,#E8E2DC);user-select:none}
+.ad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-5);margin-top:var(--sp-8)}
+.ad-slider{--pos:50%;position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(26,15,21,.10);border:1.5px solid var(--mist);user-select:none}
 .ad-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .ad-before{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-.ad-label{position:absolute;top:14px;z-index:3;font-family:'Montserrat',sans-serif;font-weight:700;font-size:19px;color:#C9A56A;text-shadow:0 1px 5px rgba(0,0,0,.55);pointer-events:none}
-.ad-label.left{left:16px}
-.ad-label.right{right:16px}
+.ad-label{position:absolute;top:14px;z-index:3;font-family:var(--f-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cream);background:var(--wine);padding:6px 14px;border-radius:var(--pill);pointer-events:none}
+.ad-label.left{left:14px}
+.ad-label.right{right:14px}
 .ad-handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;transform:translateX(-50%);z-index:4;pointer-events:none;box-shadow:0 0 8px rgba(0,0,0,.2)}
-.ad-handle::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 12px rgba(26,15,21,.28);z-index:5}
-.ad-handle svg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:6;width:20px;height:20px;color:#9b9296}
+.ad-handle::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--cream);border:2px solid var(--wine);box-shadow:0 4px 14px rgba(26,15,21,.25);z-index:5}
+.ad-handle svg{display:none}
+.ad-handle::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;background-color:var(--wine);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='2.3'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='10%207%205%2012%2010%2017'/%3E%3Cpolyline%20points='14%207%2019%2012%2014%2017'/%3E%3C/svg%3E") center / contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='2.3'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='10%207%205%2012%2010%2017'/%3E%3Cpolyline%20points='14%207%2019%2012%2014%2017'/%3E%3C/svg%3E") center / contain no-repeat;z-index:6}
 .ad-slider input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:7}
-@media(max-width:560px){.ad-label{font-size:16px}}
+@media(max-width:768px){.ad-grid{grid-template-columns:1fr;gap:var(--sp-4)}}
+@media(max-width:560px){.ad-label{font-size:.66rem;padding:5px 11px}}
 
 /* ============================================================================
    Video destaque
@@ -774,21 +1024,32 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   border-radius: 50%;
   z-index: 2;
 }
+/* Reels: 4 cards preenchem a faixa no desktop (sem scroll) -> as setas ficariam
+   desabilitadas/transparentes e sem funcao. Navegacao por drag/swipe; setas ocultas
+   (consistente com avaliacoes). */
+.carousel-wrap:has(.reel-card) .carousel-nav { display: none; }
 
 /* ============================================================================
    Avaliacoes
    ============================================================================ */
+/* Avaliacoes: respiro entre cards + sem setas (carrossel rola por arraste/swipe
+   nativo; scroll-snap ja vem do .carousel global). Escopado via :has. */
+.carousel:has(.review-card) { gap: 22px; }
+/* Avaliacoes: largura unificada ao .container (sem breakout 96vw); navegacao por
+   drag/swipe nativo (scroll-snap), entao as setas ficam ocultas. */
+.carousel-wrap:has(.review-card) .carousel-nav { display: none; }
 .review-card {
   background: var(--ivory);
-  border-radius: var(--r);
-  padding: var(--sp-6);
+  border: 1px solid var(--mist);
+  border-radius: var(--r-lg);
+  padding: 24px 22px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
   min-height: 260px;
 }
-.review-stars { color: var(--gold); font-size: 1.05rem; letter-spacing: 2px; }
+.review-stars { color: var(--gold); font-size: 16px; letter-spacing: 2px; }
 .review-title {
   font-family: var(--f-serif);
   font-size: 1.15rem;
@@ -799,7 +1060,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 .review-title:empty { display: none; }
 .review-text {
   color: var(--ink-soft);
-  font-size: 0.92rem;
+  font-size: 17.5px;
   line-height: 1.6;
   flex: 1;
 }
@@ -807,7 +1068,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  padding-top: var(--sp-3);
+  margin-top: 6px;
+  padding-top: 16px;
   border-top: 1px solid var(--mist);
 }
 .review-author img {
@@ -818,12 +1080,12 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   background: var(--blush);
 }
 .review-author .review-name {
-  font-weight: 600;
-  font-size: 0.88rem;
+  font-weight: 700;
+  font-size: 15px;
   color: var(--ink);
   display: block;
 }
-.review-author .review-city { font-size: 0.75rem; color: var(--smoke); }
+.review-author .review-city { font-size: 13.5px; color: var(--smoke); }
 .verified-badge {
   display: inline-flex;
   align-items: center;
@@ -854,8 +1116,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   text-align: left;
   padding: var(--sp-5) 0;
   font-family: var(--f-serif);
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.42rem;
+  font-weight: 600;
   color: var(--ink);
   display: flex;
   align-items: center;
@@ -877,7 +1139,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   max-height: 0;
   overflow: hidden;
   color: var(--ink-soft);
-  font-size: 0.98rem;
+  font-size: 1.06rem;
   line-height: 1.7;
   transition: max-height var(--med), padding var(--med);
 }
@@ -890,14 +1152,14 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   background: var(--ink);
   color: var(--blush);
   border-radius: var(--r-lg);
-  padding: var(--sp-16) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
   text-align: center;
   max-width: 880px;
   margin: 0 auto;
   overflow: hidden;
 }
 .newsletter h2 { color: #fff; font-style: italic; }
-.newsletter p { color: var(--mist); font-size: 1.02rem; margin-bottom: var(--sp-6); }
+.newsletter p { color: var(--blush); font-size: 1.1rem; margin-bottom: var(--sp-6); }
 .newsletter-form {
   display: flex;
   gap: var(--sp-2);
@@ -925,7 +1187,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   border-radius: var(--pill);
   transition: background var(--fast);
 }
-.newsletter-form button:hover { background: var(--wine-h); }
+.newsletter-form button:hover { background: var(--gold); color: #fff; }
 
 /* ============================================================================
    Footer
@@ -933,8 +1195,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 .site-footer {
   background: var(--ink);
   color: var(--mist);
-  padding: var(--sp-16) 0 var(--sp-8);
-  margin-top: var(--sp-20);
+  padding: var(--sp-12) 0 var(--sp-8);
+  margin-top: var(--sp-12);
 }
 .footer-grid {
   display: grid;
@@ -951,11 +1213,11 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   text-transform: uppercase;
   margin-bottom: var(--sp-5);
 }
-.footer-grid ul li { margin-bottom: var(--sp-2); font-size: 0.9rem; }
+.footer-grid ul li { margin-bottom: var(--sp-2); font-size: 0.96rem; }
 .footer-grid a { color: var(--mist); transition: color var(--fast); }
 .footer-grid a:hover { color: #fff; }
 .footer-brand img { height: 52px; margin-bottom: var(--sp-4); filter: brightness(0) invert(1); }
-.footer-brand p { font-size: 0.88rem; line-height: 1.7; color: var(--mist); }
+.footer-brand p { font-size: 0.95rem; line-height: 1.7; color: var(--mist); }
 .footer-bottom {
   border-top: 1px solid rgba(213, 207, 201, 0.12);
   padding-top: var(--sp-6);
@@ -1193,9 +1455,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   padding-left: var(--sp-12);
   position: relative;
   margin-bottom: var(--sp-5);
-  font-size: 1rem;
+  font-size: 1.18rem;
   color: var(--ink-soft);
-  line-height: 1.65;
+  line-height: 1.6;
 }
 .modo-uso-list li::before {
   counter-increment: item;
@@ -1335,14 +1597,55 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   border-radius: var(--r);
   padding: var(--sp-6);
   box-shadow: var(--shadow);
+  max-width: var(--container-narrow);   /* bloco focal: largura estreita do sistema */
+  margin-inline: auto;
 }
-.cj-items {
+/* Protocolo 90 Dias (oferta-ancora) — reusa .compre-junto/.cj-* */
+.protocolo-incluso {
+  display: grid;
+  gap: var(--sp-3);
+  margin: var(--sp-6) 0;
+  padding: var(--sp-5) 0;
+  border-top: 1px solid var(--mist);
+  border-bottom: 1px solid var(--mist);
+}
+.protocolo-incluso li {
   display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 1.04rem;
+  color: var(--ink-soft);
+}
+.protocolo-incluso li svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  margin-top: 2px;
+  color: var(--ok);
+}
+.protocolo-incluso li strong { color: var(--ink); }
+.protocolo-garantia {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--sp-4);
-  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--sp-4);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--wine);
+}
+.protocolo-garantia svg { width: 18px; height: 18px; }
+.cj-items {
+  /* Grade que divide igual (4 colunas) -> 2x2 no mobile. Sem flex-wrap: nao sobra
+     "+" pendurado nem produto orfao no fim da linha. */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  align-items: start;
+  gap: var(--sp-5) var(--sp-4);
   margin-bottom: var(--sp-6);
+}
+@media (max-width: 560px) {
+  .cj-items { grid-template-columns: repeat(2, 1fr); }
 }
 .cj-item {
   text-align: center;
@@ -1367,6 +1670,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   font-weight: 700;
 }
 .cj-plus {
+  display: none;   /* separador decorativo "+" removido: a grade ja agrupa os 4 itens */
   font-size: 1.8rem;
   color: var(--wine);
   font-weight: 300;
@@ -1478,22 +1782,18 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 /* ============================================================================
    Responsividade global
    ============================================================================ */
-@media (max-width: 1040px) {
-  .cats-grid { grid-template-columns: repeat(2, 1fr); }
-}
 @media (max-width: 760px) {
-  :root { --sp-20: 64px; --sp-16: 48px; }
-  .section { padding: var(--sp-16) 0; }
+  :root { --sp-20: 56px; --sp-16: 40px; }
+  /* .section usa --section-y (clamp), que ja reduz para ~46px no mobile */
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: 1fr; }
-  .cats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-4); }
-  .ad-grid { grid-template-columns: 1fr; }
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.6rem; }
+  h1 { font-size: 2.45rem; }
+  h2 { font-size: 2.05rem; }
+  .section-title p { font-size: 1.2rem; }
 }
 
 /* Social Proof Notification */
-.sp-toast{position:fixed;bottom:24px;left:24px;z-index:10000;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.08);padding:14px 18px 14px 14px;display:flex;align-items:center;gap:12px;max-width:360px;transform:translateX(-120%);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease;pointer-events:none;border-left:3px solid var(--wine)}
+.sp-toast{position:fixed;bottom:24px;left:24px;z-index:10000;background:var(--ivory);border:1px solid var(--mist);border-radius:var(--r);box-shadow:var(--shadow-lg);padding:14px 18px 14px 14px;display:flex;align-items:center;gap:12px;max-width:360px;transform:translateX(-120%);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease;pointer-events:none;border-left:3px solid var(--wine)}
 .sp-toast.sp-show{transform:translateX(0);opacity:1;pointer-events:auto}
 .sp-toast-img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--gold,#C4956A)}
 .sp-toast-body{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -1513,3 +1813,40 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================================
+   Animacoes de entrada no scroll — CSS puro (scroll-driven), SEM JS
+   - Anima so opacity + a propriedade `translate` (independente do `transform`,
+     entao NAO conflita com os lifts de :hover dos cards).
+   - Guardado por @supports: navegadores sem suporte mostram tudo normalmente
+     (nenhum conteudo fica preso invisivel) — degradacao graciosa.
+   - Desativado quando o usuario pede menos movimento.
+   ============================================================================ */
+@keyframes reveal-rise {
+  from { opacity: 0; translate: 0 18px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .section-title,
+    .selos .selo,
+    .cat-card,
+    .prod-card,
+    .review-card,
+    .reel-card,
+    .ad-slider,
+    .fundadora-img,
+    .fundadora-texto,
+    .faq-item,
+    .newsletter {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 55%;
+    }
+  }
+}
+
+/* Microinteracao sutil: o icone do selo sobe levemente no hover.
+   Funciona em todos os navegadores (so transform). */
+.selos .selo-ico { transition: transform var(--med); }
+.selos .selo:hover .selo-ico { transform: translateY(-3px); }

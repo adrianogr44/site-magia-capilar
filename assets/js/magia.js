@@ -98,6 +98,10 @@
       const next = $('.carousel-nav.next', wrap);
       if (!track) return;
 
+      // Carrosseis com data-autoplay tambem dao loop: setas sempre clicaveis,
+      // voltando ao inicio/fim em vez de travar (disabled).
+      const loop = wrap.hasAttribute('data-autoplay');
+
       function step() {
         const child = track.firstElementChild;
         if (!child) return 300;
@@ -105,16 +109,45 @@
         const gap = parseFloat(cs.gap || '20');
         return child.getBoundingClientRect().width + gap;
       }
+      function maxScroll() { return track.scrollWidth - track.clientWidth - 2; }
       function update() {
-        const maxScroll = track.scrollWidth - track.clientWidth - 2;
+        if (loop) return; // setas nunca ficam desabilitadas quando ha loop
         if (prev) prev.classList.toggle('disabled', track.scrollLeft <= 0);
-        if (next) next.classList.toggle('disabled', track.scrollLeft >= maxScroll);
+        if (next) next.classList.toggle('disabled', track.scrollLeft >= maxScroll());
       }
-      on(prev, 'click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-      on(next, 'click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+      // Clique = avanca/recua exatamente 1 card; o navegador trava nas pontas
+      // (sem voltar ao inicio de repente).
+      function goNext() { track.scrollBy({ left: step(), behavior: 'smooth' }); }
+      function goPrev() { track.scrollBy({ left: -step(), behavior: 'smooth' }); }
+      on(prev, 'click', goPrev);
+      on(next, 'click', goNext);
       on(track, 'scroll', update, { passive: true });
       window.addEventListener('resize', update);
       update();
+
+      // Autoplay opcional: so quando o .carousel-wrap tem data-autoplay.
+      // Pausa no hover/touch e ao usar as setas; respeita reduced-motion.
+      if (loop) {
+        const interval = parseInt(wrap.dataset.interval, 10) || 5000;
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let timer = null, dir = 1;
+        // Ping-pong: avanca ate o fim e volta suave (1 card por vez), sem salto.
+        const tick = () => {
+          const max = maxScroll();
+          if (track.scrollLeft >= max - 1) dir = -1;
+          else if (track.scrollLeft <= 1) dir = 1;
+          track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+        };
+        const startAuto = () => { if (!timer && !reduce) timer = setInterval(tick, interval); };
+        const stopAuto = () => { if (timer) { clearInterval(timer); timer = null; } };
+        const restart = () => { stopAuto(); startAuto(); }; // reinicia os 5s apos clicar
+        startAuto();
+        on(wrap, 'mouseenter', stopAuto);
+        on(wrap, 'mouseleave', startAuto);
+        on(track, 'touchstart', stopAuto, { passive: true });
+        on(prev, 'click', restart);
+        on(next, 'click', restart);
+      }
     });
   }
 

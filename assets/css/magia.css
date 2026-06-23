@@ -79,7 +79,7 @@
   /* Tipografia */
   /* --f-serif = fonte de titulos/destaques editoriais (Fraunces). Nome mantido por compatibilidade. */
   --f-serif: "Fraunces", "Georgia", "Times New Roman", serif;
-  --f-sans:  "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --f-sans:  "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
   /* Container — UMA largura padrao (wide) + UMA estreita (texto-corrido/blocos focais ~68ch) */
   --container: 1240px;
@@ -182,21 +182,22 @@ p { margin: 0 0 var(--sp-3); }
 .section-title .eyebrow {
   display: inline-block;
   font-family: var(--f-sans);    /* label em caixa-alta: sans (DM Sans) lê melhor que serif */
-  color: var(--gold-d);          /* #A0774C ~ #A87B4F: dourado escuro legivel sobre cream */
+  color: var(--wine);            /* voz estrutural = wine (bordô da marca), nao o dourado de template */
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 2.5px;
 }
-/* Deco-line dourada sob o eyebrow — acabamento editorial consistente em todas
-   as secoes (gold usado com parcimonia, so como acento). */
+/* Assinatura: gota wine sob o eyebrow (eco do "pingo" do logo Magia Capilar),
+   no lugar da deco-line dourada editorial generica. Wine, parcimonioso. */
 .section-title .eyebrow::after {
   content: "";
   display: block;
-  width: 34px;
-  height: 1.5px;
+  width: 7px;
+  height: 7px;
   margin: var(--sp-3) auto 0;
-  border-radius: var(--pill);
-  background: var(--gold-d);
+  background: var(--wine);
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
 }
 .section-title h2 { margin-bottom: var(--sp-4); }
 .section-title p {
@@ -618,7 +619,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   transition: transform var(--med), box-shadow var(--med);
   cursor: pointer;
 }
-.cat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.cat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 .cat-card img {
   position: absolute;
   inset: 0;
@@ -682,15 +683,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
-  transition: transform .28s var(--ease),
-              box-shadow .28s ease,
-              border-color .28s ease;
   position: relative;
-}
-.prod-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--wine);
-  box-shadow: 0 8px 24px rgba(26,15,21,.08);
 }
 .prod-card:hover .btn-primary { background: var(--wine-d); }
 .prod-card .prod-img {
@@ -705,7 +698,6 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   object-fit: cover;
   transition: transform .4s var(--ease);
 }
-.prod-card:hover .prod-img img { transform: none; }
 .prod-badge {
   position: absolute;
   top: var(--sp-3);
@@ -868,7 +860,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   font-size: 1.25rem;
   line-height: 1.5;
   color: var(--wine);
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--wine);
   padding-left: var(--sp-5);
   margin: var(--sp-6) 0 0;
 }
@@ -1694,37 +1686,6 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   }
 }
 
-/* ============================================================================
-   Animacoes de entrada no scroll — CSS puro (scroll-driven), SEM JS
-   - Anima so opacity + a propriedade `translate` (independente do `transform`,
-     entao NAO conflita com os lifts de :hover dos cards).
-   - Guardado por @supports: navegadores sem suporte mostram tudo normalmente
-     (nenhum conteudo fica preso invisivel) — degradacao graciosa.
-   - Desativado quando o usuario pede menos movimento.
-   ============================================================================ */
-@keyframes reveal-rise {
-  from { opacity: 0; translate: 0 18px; }
-  to   { opacity: 1; translate: 0 0; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .section-title,
-    .selos .selo,
-    .cat-card,
-    .prod-card,
-    .review-card,
-    .reel-card,
-    .ad-slider,
-    .fundadora-img,
-    .fundadora-texto,
-    .faq-item {
-      animation: reveal-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 5% entry 55%;
-    }
-  }
-}
-
 /* Microinteracao sutil: o icone do selo sobe levemente no hover.
    Funciona em todos os navegadores (so transform). */
 .selos .selo-ico { transition: transform var(--med); }
@@ -1775,7 +1736,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   font-size: 13px;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--gold-d);
+  color: var(--wine);            /* voz estrutural = wine (alinhado aos eyebrows de secao) */
   margin-bottom: 18px;
   position: relative;
   padding-left: 36px;
@@ -1787,7 +1748,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   top: 50%;
   width: 24px;
   height: 1.5px;
-  background: var(--gold-d);
+  background: var(--wine);
   transform: translateY(-50%);
 }
 .bfeat-h {
@@ -1876,19 +1837,6 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
     top: auto; right: auto; bottom: auto; left: auto;
     display: inline-block;
     margin: 12px 8px 0 0;
-  }
-}
-
-/* Entrada suave no scroll — mesmo idioma das outras secoes (so opacity/translate),
-   guardado por @supports; navegadores sem suporte mostram tudo normalmente. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .bfeat-text,
-    .bfeat-media {
-      animation: reveal-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 5% entry 55%;
-    }
   }
 }
 
@@ -2004,33 +1952,28 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-  align-items: start;   /* foto alinha ao topo do texto (nao flutua no meio da coluna alta) */
 }
 @media (min-width: 900px) {
   .protocolo-grid {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 56px;
-  }
-  /* conteudo e bem mais alto que a foto: a foto "acompanha" a leitura (sticky) */
-  .protocolo-media {
-    position: sticky;
-    top: calc(var(--header-h) + 16px);
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;   /* foto em altura natural, centralizada vertical na coluna de texto */
   }
 }
 
 .protocolo-media {
-  background: var(--ivory);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  position: relative;
+  border-radius: var(--r-lg);
 }
 .protocolo-media img {
   width: 100%; height: auto; display: block;
-  object-fit: cover;
+  /* foto dos 4 frascos (quadrada, fundo claro): caixa 1/1 + contain p/ mostrar
+     os frascos INTEIROS, sem corte lateral nem distorcao. */
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: center;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .protocolo-content { max-width: 560px; }
@@ -2055,10 +1998,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   border-top: 1px solid var(--border);
 }
 .protocolo-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 0;
+  display: block;
+  position: relative;
+  padding: 12px 0 12px 28px;
   border-bottom: 1px solid var(--border);
   font-family: var(--f-sans);
   font-size: 14.5px;
@@ -2078,9 +2020,10 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 }
 .protocolo-check,
 .protocolo-bonus-icon {
-  flex-shrink: 0;          /* icone nao encolhe nem empurra o texto pra coluna estreita */
+  position: absolute;
+  left: 0;
+  top: 12px;
   width: 18px;
-  display: inline-block;
   text-align: center;
   line-height: 1.5;
 }
@@ -2196,12 +2139,6 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   overflow: hidden;
   display: flex; flex-direction: column;
   box-shadow: none;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-.prods-grid .prod-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--wine);
-  box-shadow: 0 14px 32px rgba(26, 15, 21, .12);
 }
 .prods-grid .prod-img {
   display: block;
@@ -2251,6 +2188,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   margin: 2px 0 8px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2793,53 +2731,14 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   padding: 14px 28px;
 }
 
-/* ============================================================================
-   REFINO VISUAL + ANIMACOES — so transform/opacity; reduced-motion ja e
-   neutralizado globalmente pelo @media reduce (regra * acima). Degrada sem
-   suporte a animation-timeline (elementos aparecem normais).
-   ============================================================================ */
-
-/* ---- PARTE 1: Reveal on scroll (utilitario CSS-only) ----
-   O sistema antigo (reveal-rise) ja anima .section-title/.prod-card/.cat-card/
-   .review-card/.reel-card/.selo/.bfeat-text etc. Para NAO duplicar animacao,
-   .reveal/.reveal-stagger sao usados apenas em blocos ainda nao cobertos:
-   .how-steps, .how-photos, .needs-grid, .how-head, .results-wall-head, garantia. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      animation: reveal-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 60%;
-    }
-    .reveal-stagger > * {
-      opacity: 0;
-      transform: translateY(24px);
-      animation: reveal-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
-    .reveal-stagger > *:nth-child(2) { animation-range: entry 5% entry 60%; }
-    .reveal-stagger > *:nth-child(3) { animation-range: entry 9% entry 64%; }
-    .reveal-stagger > *:nth-child(4) { animation-range: entry 13% entry 68%; }
-    .reveal-stagger > *:nth-child(5) { animation-range: entry 17% entry 72%; }
-    .reveal-stagger > *:nth-child(n+6) { animation-range: entry 21% entry 76%; }
-  }
-  @keyframes reveal-up { to { opacity: 1; transform: translateY(0); } }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal-stagger > * { animation: none; opacity: 1; transform: none; }
-}
-
-/* ---- PARTE 2: Hover / focus refinements ---- */
+/* ---- Hover / focus refinements ---- */
 .prod-card, .prods-grid .prod-card {
   transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
 .prod-card:hover, .prods-grid .prod-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-3px);
   border-color: var(--wine);
-  box-shadow: 0 22px 44px rgba(26,15,21,.18);
+  box-shadow: 0 14px 28px rgba(26,15,21,.10);
 }
 .prod-card .prod-img img, .prods-grid .prod-img img {
   transition: transform .55s cubic-bezier(.4,0,.2,1);
@@ -2861,7 +2760,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 .need-card:hover { transform: translateY(-3px); border-color: var(--wine); box-shadow: 0 14px 28px rgba(26,15,21,.10); }
 
 .how-step { transition: transform .3s ease, box-shadow .3s ease; }
-.how-step:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.how-step:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 
 .reel-card img, .how-photo img { transition: transform .6s cubic-bezier(.4,0,.2,1); }
 .reel-card:hover img, .how-photo:hover img { transform: scale(1.04); }
@@ -2877,8 +2776,6 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
   font-weight: 600;
   color: var(--wine);
 }
-/* Oferta-ancora: sombra mais dramatica que os demais cards (hierarquia visual) */
-.protocolo-media { box-shadow: 0 24px 50px rgba(110, 31, 42, .18); }
 
 /* ============================================================================
    AVALIACOES — layout editorial assimetrico (.reviews-section).
@@ -3008,4 +2905,153 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 @media (prefers-reduced-motion: reduce) {
   .reviews-section .review-card { transition: none; }
   .reviews-section .review-card:hover { transform: none; box-shadow: inherit; }
+}
+
+/* ============================================================================
+   M7 — REDESENHO VISUAL DIRIGIDO (home / index.html) — v2: BASE CLARA
+   Direcao (substitui a v1 de paineis bordo cheios): cream/ivory dominam; o
+   --wine entra como ACENTO PONTUAL (titulos-chave, <em>, botoes, filetes,
+   selos). A cor "cheia" fica nos FRASCOS bordo da foto — a pagina espelha o
+   produto: claro domina, bordo pontua. ZERO bloco de cor chapado.
+   Assinatura: "fio dourado" (filete + pingo, eco do logo) sob o display, sobre
+   base clara. Fraunces nos titulos; corpo em Roboto (--f-sans). Tudo ESCOPADO.
+   ============================================================================ */
+
+/* --- Assinatura: fio dourado (filete + pingo) sob o display (base clara) ----- */
+.hero .bfeat-h::after,
+.protocolo-content .bfeat-h::after {
+  content: "";
+  display: block;
+  width: 88px;
+  height: 12px;
+  margin: 20px 0 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88 12'%3E%3Cline x1='1' y1='6' x2='70' y2='6' stroke='%23C4956A' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='80' cy='6' r='4.5' fill='%23C4956A'/%3E%3C/svg%3E") left center / 88px 12px no-repeat;
+}
+
+/* === HERO — base clara, frascos como protagonista (sem bloco bordo) ========= */
+/* fundo cream herdado (.hero default); so amplio o display Fraunces. Titulo ink,
+   wine pontual no <em>/eyebrow/CTA (defaults). Os frascos bordo fazem o pop. */
+.hero .bfeat-h {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: -0.02em;
+}
+
+/* === B3 — SELOS: deixa de ser grid de cards icone+titulo -> faixa inline ==== */
+.selos { background: var(--cream); }
+.selos .selos-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; max-width: 940px; padding: 26px 20px; }
+.selos .selo { flex-direction: row; align-items: center; gap: 8px; padding: 0; }
+.selos .selo-ico svg { width: 18px; height: 18px; }
+.selos .selo-txt { flex-direction: row; }
+.selos .selo strong { margin: 0; font-size: 14px; }
+.selos .selo-txt span { display: none; } /* de-densifica: faixa de confianca, nao grid */
+.selos .selo:not(:first-child)::before { content: "•"; color: var(--gold-d); margin-right: 8px; font-size: 12px; }
+
+/* === B3 — PRODUTOS: Kit vira card-destaque (hierarquia, nao grid uniforme) == */
+.prods-grid .prod-card.is-featured { border-color: var(--wine); box-shadow: var(--shadow); }
+@media (min-width: 700px) {
+  .prods-grid .prod-card.is-featured { grid-column: 1 / -1; flex-direction: row; align-items: stretch; }
+  .prods-grid .is-featured .prod-img { flex: 0 0 38%; aspect-ratio: auto; }
+  .prods-grid .is-featured .prod-body { flex: 1; justify-content: center; padding: 26px 30px; gap: 8px; }
+  .prods-grid .is-featured .prod-name { font-family: var(--f-serif); font-size: 26px; line-height: 1.15; }
+  .prods-grid .is-featured .prod-desc { -webkit-line-clamp: 4; line-clamp: 4; font-size: 14.5px; }
+  .prods-grid .is-featured .prod-price-now { font-size: 28px; }
+  .prods-grid .is-featured .prod-actions { max-width: 380px; }
+}
+
+/* === POLIMENTO #produtos (home) — cards limpos e consistentes ==============
+   TUDO escopado em #produtos -> a MESMA .prods-grid de /guia fica intacta.
+   Base cream, --wine so como acento (botao/hover/preco). Sem cor nova. ====== */
+
+/* 1+2. Grade sem orfao: Kit (.is-featured) ocupa a linha do topo; os 5 produtos
+   ficam em 5 colunas no desktop = uma linha cheia, sem item solto.
+   (tablet 3 col / mobile 2 col seguem a base do site). */
+@media (min-width: 1000px) {
+  #produtos .prods-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* 3. Moldura de foto padronizada (atenua a diferenca de origem das imagens):
+   mesma proporcao 1:1, mesmo fundo e object-fit: cover nos 5 secundarios.
+   NAO toca o card-destaque (layout horizontal proprio). */
+#produtos .prods-grid .prod-card:not(.is-featured) .prod-img {
+  aspect-ratio: 1 / 1;
+  background: var(--cream-deep);
+}
+#produtos .prods-grid .prod-card:not(.is-featured) .prod-img img {
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+}
+
+/* 5. Eyebrow de categoria recuado: o NOME do produto e a hierarquia principal */
+#produtos .prods-grid .prod-cat {
+  color: var(--smoke);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+/* 4. Dois botoes equilibrados: Adicionar = primario wine; Detalhes = secundario
+   discreto (outline fino), mesmo tamanho (a grade 1fr/1fr ja iguala). */
+#produtos .prods-grid .prod-actions .btn-outline {
+  border-width: 1px;
+  border-color: var(--mist);
+  color: var(--ink-soft);
+}
+#produtos .prods-grid .prod-actions .btn-outline:hover {
+  border-color: var(--wine);
+  color: var(--wine);
+  background: transparent;
+}
+
+/* 6. Respiro consistente (tokens --sp-*): corpo e preco sem amontoar */
+#produtos .prods-grid .prod-body { padding: var(--sp-4); gap: var(--sp-2); }
+#produtos .prods-grid .prod-price { margin: var(--sp-1) 0 var(--sp-3); }
+
+/* === B3 — NECESSIDADES: 4 caixas iguais -> indice editorial numerado ======== */
+.needs-section .needs-grid { display: block; counter-reset: need; max-width: 880px; }
+.needs-section .need-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+  align-items: baseline;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: 20px 6px;
+}
+.needs-section .needs-grid .need-card:last-child { border-bottom: 1px solid var(--border); }
+.needs-section .need-card::before {
+  counter-increment: need;
+  content: counter(need, decimal-leading-zero);
+  grid-row: 1 / span 2;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--gold-d);
+}
+.needs-section .need-card-title { grid-column: 2; margin: 0 0 4px; font-size: 18px; }
+.needs-section .need-card-desc { grid-column: 2; margin: 0; color: var(--ink-muted); }
+.needs-section .need-card:hover { transform: none; box-shadow: none; border-color: var(--border); }
+.needs-section .need-card:hover .need-card-title { color: var(--wine); }
+.needs-section .needs-grid .need-card:hover { border-top-color: var(--wine); }
+
+/* === B3 — CARDS DE BENEFICIO (PDPs): tira o icone identico 5x -> tipografia = */
+.beneficios-grid .beneficio-card {
+  text-align: left;
+  background: transparent;
+  box-shadow: none;
+  border-left: 2px solid var(--gold);
+  border-radius: 0;
+  padding: 6px 0 6px 18px;
+}
+.beneficios-grid .beneficio-card .ico { display: none; }
+.beneficios-grid .beneficio-card h4 { margin: 0; font-size: 1.1rem; }
+
+/* === Responsivo: featured volta a empilhar; fio menor no mobile ============= */
+@media (max-width: 699px) {
+  .hero .bfeat-h::after,
+  .protocolo-content .bfeat-h::after { width: 72px; background-size: 72px 10px; }
 }

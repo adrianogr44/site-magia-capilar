@@ -436,6 +436,12 @@
           const img = btn.dataset[`cjImg${i}`] || '';
           if (id) cartAdd({ id, nome, preco, img, qty: 1 });
         }
+        // Redirecionamento opcional pos-add (opt-in): botoes com data-cj-redirect
+        // (ex.: #protocolo "Comecar meu Protocolo" -> /checkout.html) navegam APOS
+        // gravar o mc_cart e disparar add_to_cart de cada item. Buttons de "compre
+        // junto" sem o atributo seguem so adicionando ao carrinho (sem redirect).
+        const cjRedirect = btn.dataset.cjRedirect;
+        if (cjRedirect) window.location.href = cjRedirect;
       });
     });
     // InitiateCheckout on checkout button click (Meta Pixel + GA4 + GTM dataLayer)

@@ -11,7 +11,7 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const on = (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts);
   const fmtBRL = (n) => Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  const esc = (s) => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const esc = (s) => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
   // ---------- Header scroll ----------
   function initHeader() {
@@ -419,6 +419,10 @@
         const id   = btn.dataset.prodId;
         const nome = btn.dataset.prodNome;
         const preco = parseFloat(btn.dataset.prodPreco || '0');
+        if (!Number.isFinite(preco) || preco < 0) {
+          console.warn('Preço inválido no produto:', id, btn.dataset.prodPreco);
+          return;
+        }
         const img  = btn.dataset.prodImg || '';
         const qty  = parseInt(btn.dataset.prodQty || '1', 10);
         if (!id) return;
@@ -577,7 +581,7 @@
           }
           if (d && d.servicos && d.servicos.length) {
             result.innerHTML = d.servicos.map(s =>
-              `<div style="display:flex;justify-content:space-between;padding:4px 0"><span>${s.nome} <small class="mute">(${s.prazo}d)</small></span><strong>${fmtBRL(s.valor)}</strong></div>`
+              `<div style="display:flex;justify-content:space-between;padding:4px 0"><span>${esc(s.nome)} <small class="mute">(${esc(s.prazo)}d)</small></span><strong>${fmtBRL(s.valor)}</strong></div>`
             ).join('');
           } else {
             result.innerHTML = '<span class="mute">Nao foi possivel calcular o frete para este CEP.</span>';

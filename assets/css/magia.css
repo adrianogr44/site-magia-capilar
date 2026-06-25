@@ -1647,6 +1647,36 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 .text-wine { color: var(--wine); }
 .bg-cream { background: var(--cream); }
 .bg-ivory { background: var(--ivory); }
+
+/* ===== Banner antes/depois -> resultados (faixa logo abaixo dos selos) ===== */
+.resultado-banner { background: var(--cream); text-align: center; }
+.resultado-banner .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-6);
+}
+.resultado-banner-figure {
+  margin: 0;
+  width: 100%;
+  max-width: 480px;
+}
+.resultado-banner-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+}
+.resultado-banner-caption {
+  margin: var(--sp-4) 0 0;
+  font-family: var(--f-sans);
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+@media (min-width: 768px) {
+  .resultado-banner-figure { max-width: 520px; }
+}
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
 .mt-4 { margin-top: var(--sp-4); }
@@ -2927,13 +2957,21 @@ section[id] { scroll-margin-top: calc(var(--header-h) + var(--announce-h) + 8px)
 
 /* === B3 — SELOS: deixa de ser grid de cards icone+titulo -> faixa inline ==== */
 .selos { background: var(--cream); }
-.selos .selos-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; max-width: 940px; padding: 26px 20px; }
+.selos .selos-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; max-width: 940px; padding: 28px 20px; }
 .selos .selo { flex-direction: row; align-items: center; gap: 8px; padding: 0; }
-.selos .selo-ico svg { width: 18px; height: 18px; }
+.selos .selo-ico svg { width: 20px; height: 20px; }
 .selos .selo-txt { flex-direction: row; }
 .selos .selo strong { margin: 0; font-size: 14px; }
 .selos .selo-txt span { display: none; } /* de-densifica: faixa de confianca, nao grid */
 .selos .selo:not(:first-child)::before { content: "•"; color: var(--gold-d); margin-right: 8px; font-size: 12px; }
+/* desktop: mais respiro vertical, mas 4 selos numa linha unica (sem quebra) */
+@media (min-width: 768px) {
+  .selos .selos-grid { flex-wrap: nowrap; gap: 12px 24px; max-width: 1160px; padding: 40px 24px; }
+  .selos .selo { gap: 11px; }
+  .selos .selo-ico svg { width: 26px; height: 26px; }
+  .selos .selo strong { font-size: 17px; white-space: nowrap; }
+  .selos .selo:not(:first-child)::before { margin-right: 12px; font-size: 14px; }
+}
 
 /* === B3 — PRODUTOS: Kit vira card-destaque (hierarquia, nao grid uniforme) == */
 .prods-grid .prod-card.is-featured { border-color: var(--wine); box-shadow: var(--shadow); }

@@ -835,7 +835,11 @@ function submitCheckout() {
         document.getElementById('loading').classList.remove('on');
         if (data.ok && data.checkout_url) {
             var url = data.checkout_url;
-            if (!/^https:\/\/[a-z0-9-]+\.(pay\.yampi\.com\.br|yampi\.com\.br|dooki\.com\.br)/i.test(url)) {
+            try {
+                const u = new URL(url);
+                const okHost = u.hostname.endsWith('.yampi.com.br') || u.hostname.endsWith('.dooki.com.br');
+                if (u.protocol !== 'https:' || !okHost) throw new Error('host inválido');
+            } catch {
                 showError('URL de checkout inválida.'); return;
             }
             localStorage.removeItem('mc_cart');

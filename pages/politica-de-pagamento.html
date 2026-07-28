@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Consent Mode v2 default (ANTES do GTM) -->
+    <!-- Consent Mode v2 default (antes das tags) -->
     <script>
     window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
     gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",wait_for_update:500});
     try{if(localStorage.getItem("magia_consent")==="granted"){gtag("consent","update",{ad_storage:"granted",analytics_storage:"granted",ad_user_data:"granted",ad_personalization:"granted"})}}catch(e){}
     </script>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WTJPZFP9');</script>
-    <!-- End Google Tag Manager -->
     <title>Politica de Pagamento — Magia Capilar</title>
     <link rel="icon" type="image/png" href="../img/Group_24.png">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Puritan:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -56,12 +49,42 @@
             .content{padding:36px 20px 60px}
         }
     </style>
+
+<!-- Meta Pixel (LGPD: consent-gated) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,"script","https://connect.facebook.net/en_US/fbevents.js");
+fbq("consent","revoke");
+fbq("init","1513052463085684");
+try{
+  if(localStorage.getItem("magia_consent")==="granted"){
+    fbq("consent","grant");
+  }
+}catch(e){}
+fbq("track","PageView");
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1513052463085684&ev=PageView&noscript=1"/></noscript>
+
+<!-- GA4 (LGPD: consent mode v2) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8GNVTQLY7F"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});
+try{
+  if(localStorage.getItem("magia_consent")==="granted"){
+    gtag("consent","update",{ad_storage:"granted",analytics_storage:"granted",ad_user_data:"granted",ad_personalization:"granted"});
+  }
+}catch(e){}
+gtag("js",new Date());gtag("config","G-8GNVTQLY7F",{anonymize_ip:true});
+</script>
+
+<!-- Atribuicao: preserva utm_*/fbclid/gclid ate o checkout Yampi -->
+<script src="/assets/js/atribuicao.js?v=20260728"></script>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTJPZFP9"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 <div class="top-bar">
     <a href="/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg> Voltar a loja</a>
     <img src="/img/Group_24.png" alt="Magia Capilar">

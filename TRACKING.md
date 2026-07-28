@@ -7,8 +7,14 @@ este arquivo sempre que mexer em tag, pixel ou evento.
 
 | Ferramenta | ID | Onde vive |
 |---|---|---|
-| Meta Pixel | `1513052463085684` | inline no `<head>` de todas as páginas |
+| Meta Pixel | `1164154725893602` | inline no `<head>` de todas as páginas |
 | GA4 | `G-8GNVTQLY7F` | inline no `<head>` de todas as páginas |
+
+O pixel `1164154725893602` é o da conta de anúncios `act_27332730003053067` — o
+mesmo que o conjunto de vendas usa para otimizar `PURCHASE`. O site media no
+pixel `1513052463085684` até 28/07/2026; ele foi **substituído** em todas as
+páginas porque não pertencia à BM da agência, e por isso a campanha otimizava
+para um evento que nunca chegava.
 
 O container `GTM-WTJPZFP9` foi **removido** do site em 28/07/2026. Ele continha
 apenas duas tags — o mesmo pixel Meta disparando `PageView` e o mesmo Google tag
@@ -77,11 +83,13 @@ O módulo grava os parâmetros de origem em `localStorage` (chave
    `/api/yampi-checkout`. Enquanto isso não for feito, o Meta não recebe nenhum
    sinal de venda.
 
-2. **Conta de anúncios otimizando no pixel errado.** O conjunto de vendas
-   (`120246838342980148`) otimiza para `PURCHASE` no pixel `1164154725893602`,
-   que é o único pixel da conta `act_27332730003053067`. O site mede tudo no
-   `1513052463085684`, que não pertence a essa BM. Os dois nunca se encontram.
-   Enquanto seguir assim, a campanha otimiza para um evento que nunca chega.
+2. **Públicos e histórico do pixel antigo ficaram para trás.** Até 28/07/2026 o
+   site media no pixel `1513052463085684`, que não pertence à BM da agência. A
+   migração para o `1164154725893602` alinhou o site à conta de anúncios, mas o
+   novo pixel começa sem histórico: públicos de remarketing e otimização baseados
+   no pixel antigo precisam ser reconstruídos, e o aprendizado das campanhas
+   recomeça. Se houver públicos salvos valiosos no pixel antigo, o caminho é
+   compartilhá-lo com a BM antes de aposentá-lo.
 
 3. **`assets/js/whatsapp-suporte.js` existe em produção mas não neste
    repositório.** Foi publicado direto no servidor. Cuidado para o deploy não
